@@ -1,0 +1,66 @@
+{
+  "name": "Madagascar3D",
+  "version": "0.1.0",
+  "private": true,
+  "homepage": "/madagascar",
+  "dependencies": {
+    "@craco/craco": "^6.1.2",
+    "@mapequation/infomap": "^1.5.0",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^12.0.0",
+    "@testing-library/user-event": "^13.1.9",
+    "@types/d3": "^6.7.1",
+    "@types/geojson": "^7946.0.7",
+    "@types/jest": "^26.0.23",
+    "@types/node": "^15.12.4",
+    "@types/react": "^17.0.11",
+    "@types/react-dom": "^17.0.8",
+    "d3": "^7.0.0",
+    "deck.gl": "^8.4.17",
+    "mobx": "^6.3.2",
+    "mobx-react": "^7.2.0",
+    "papaparse": "^5.3.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "4.0.3",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^2.0.3",
+    "threads": "^1.6.5",
+    "threads-plugin": "^1.4.0",
+    "topojson-client": "^3.1.0",
+    "typescript": "^4.3.4",
+    "web-vitals": "^2.0.1"
+  },
+  "devDependencies": {
+    "@danmarshall/deckgl-typings": "^4.9.2",
+    "@types/papaparse": "^5.2.5",
+    "@types/topojson-client": "^3.1.0",
+    "prettier": "^2.3.1",
+    "ts-node": "^10.0.0"
+  },
+  "scripts": {
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
+    "eject": "react-scripts eject",
+    "deploy": "scp -r build/* icelab-mapequation:/var/www/madagascar"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
