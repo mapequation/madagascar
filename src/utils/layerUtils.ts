@@ -4,7 +4,15 @@ import { RGBAColor } from '@deck.gl/core';
 
 type Bounds = [number, number, number, number]; // west, south, east, north
 
-export function createTerrainLayer() {
+interface TerrainProps {
+  elevationMultiplier: number;
+}
+
+const defaultProps: Required<TerrainProps> = {
+  elevationMultiplier: 5,
+};
+
+export function createTerrainLayer(props: TerrainProps = defaultProps) {
   // Terrain
 
   // const bounds512: Bounds = [
@@ -23,7 +31,7 @@ export function createTerrainLayer() {
     process.env.PUBLIC_URL + '/elevation_1024x1024_rgba.png';
   const texture = process.env.PUBLIC_URL + '/texture_moat2021_1024x1024.png';
   const elevationMax = 2774;
-  const elevationMultiplier = 5;
+  const { elevationMultiplier } = props;
 
   const elevationDecoder = {
     rScaler: (elevationMax / 255) * elevationMultiplier,

@@ -47,8 +47,8 @@ interface Props {
 }
 
 const defaultProps: Required<Props> = {
-  width: 800,
-  height: 800,
+  width: window.innerWidth,
+  height: window.innerHeight,
   useGlobe: true,
 };
 
@@ -72,11 +72,16 @@ function Tooltip({ properties: p }: any) {
       <List.Item icon="marker" content={p.Province} />
       <List.Item
         icon={p.protected === 'yes' ? 'lock' : 'unlock'}
-        content={p.protected === 'yes' ? 'Protected' : 'Not protected'}
+        content={
+          p.protected === 'yes'
+            ? `Protected since ${p.YEAR_PROT}`
+            : 'Not protected'
+        }
       />
-      {p.YEAR_PROT != null && <List.Item>Protected in {p.YEAR_PROT}</List.Item>}
       {p.IUCN != null && <List.Item>IUCN: {p.SG_IUCN}</List.Item>}
-      <List.Item><span style={{ textTransform: "capitalize" }}>{p.Habitat}</span></List.Item>
+      <List.Item>
+        <span style={{ textTransform: 'capitalize' }}>{p.Habitat}</span>
+      </List.Item>
     </List>
   );
 }
@@ -86,14 +91,16 @@ export default observer(function Deck(
 ) {
   const hasLayers = store.layers.length > 0;
 
+  if (!hasLayers || !store.dataLoaded) return null;
+
   const { width, height, useGlobe, ...deckGlProps } = props;
 
   // const viewport = useGlobe ? viewportGlobe : viewportMercator;
   const view = useGlobe ? globeView : mapView;
 
-  console.log(
-    `Render Deck.gl, useGlobe: ${useGlobe}, num layers: ${store.layers.length}`,
-  );
+  // console.log(
+  //   `Render Deck.gl, useGlobe: ${useGlobe}, num layers: ${store.layers.length}`,
+  // );
 
   // 43.216526885, -25.6084724793002, 50.508193523, -11.941805867
   const initialViewState = {
@@ -101,49 +108,38 @@ export default observer(function Deck(
     // latitude: 37.74,
     longitude: 48,
     latitude: -20,
-    zoom: 5,
+    zoom: 5.5,
     maxZoom: 20,
     pitch: 60,
     bearing: 45,
   };
 
   return (
-    <>
-      {hasLayers && store.dataLoaded ? (
-        <DeckGL
-          initialViewState={initialViewState}
-          views={[view]}
-          controller={true}
-          width={width}
-          height={height}
-          onLoad={() => console.log('Deck GL loaded.')}
-          onError={(err) => console.log('Error: ', err)}
-          layers={store.layers}
-          getTooltip={(info: PickInfo<any>) => {
-            if (
-              info.layer &&
-              info.layer.id === 'geojson-layer' &&
-              info.object
-            ) {
-              console.log(info);
-              return {
-                html: ReactDOMServer.renderToStaticMarkup(
-                  <Tooltip properties={info.object.properties} />,
-                ),
-                style: {
-                  color: 'unset',
-                  backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                  border: 'solid 1px #ccc',
-                },
-              };
-            }
-            return null;
-          }}
-          {...deckGlProps}
-        />
-      ) : (
-        <div>Loading data...</div>
-      )}
-    </>
+    <DeckGL
+      initialViewState={initialViewState}
+      views={[view]}
+      controller={true}
+      width={width}
+      height={height}
+      onLoad={() => console.log('Deck GL loaded.')}
+      onError={(err) => console.log('Error: ', err)}
+      layers={store.layers}
+      getTooltip={(info: PickInfo<any>) => {
+        if (info.layer && info.layer.id === 'geojson-layer' && info.object) {
+          return {
+            html: ReactDOMServer.renderToStaticMarkup(
+              <Tooltip properties={info.object.properties} />,
+            ),
+            style: {
+              color: 'unset',
+              backgroundColor: 'rgba(255, 255, 255, 0.8)',
+              border: 'solid 1px #ccc',
+            },
+          };
+        }
+        return null;
+      }}
+      {...deckGlProps}
+    />
   );
 });

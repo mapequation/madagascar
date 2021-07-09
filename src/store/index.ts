@@ -10,6 +10,7 @@ class Store {
   //layers: Layer<any, any>[] = [];
 
   terrainLayer: Layer<any, any> | null = null;
+  elevationMultiplier: number = 5;
   protectedAreaGeoJson: any = null;
 
   protectedAreaLayerOn: boolean = true;
@@ -19,6 +20,7 @@ class Store {
       landLoaded: observable,
       dataLoaded: observable,
       terrainLayer: observable,
+      elevationMultiplier: observable,
       protectedAreaGeoJson: observable.ref,
       protectedAreaLayerOn: observable,
       layers: computed,
@@ -41,7 +43,9 @@ class Store {
 
   get layers(): Layer<any, any>[] {
     const l = [];
-    if (this.terrainLayer) l.push(this.terrainLayer);
+    // if (this.terrainLayer) l.push(this.terrainLayer);
+    const { elevationMultiplier } = this;
+    l.push(layerUtils.createTerrainLayer({ elevationMultiplier }));
     if (this.protectedAreaGeoJson && this.protectedAreaLayerOn)
       l.push(layerUtils.createProtectedAreaLayer(this.protectedAreaGeoJson));
     console.log('computed layers:', l);

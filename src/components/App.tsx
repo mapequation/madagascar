@@ -7,7 +7,7 @@ import { observer } from 'mobx-react';
 export default observer(function App() {
   return (
     <>
-      <Container as="header">
+      <Container as="header" style={{ marginTop: 20 }}>
         <h1>Madagascar</h1>
       </Container>
 
@@ -23,11 +23,13 @@ export default observer(function App() {
           />
         </Grid.Column>
         <Grid.Column width={12}>
-          <Deck />
+          {!store.dataLoaded && 'Loading data...'}
         </Grid.Column>
       </Grid>
 
-      <Container as="footer">@Antonelli Lab</Container>
+      <Deck />
+
+      <Container as="footer"></Container>
     </>
   );
 });

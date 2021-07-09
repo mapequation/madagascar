@@ -1,8 +1,8 @@
 #deckgl-wrapper {
-  box-sizing: border-box;
+  /* box-sizing: border-box;
   position: relative !important;
   top: unset !important;
-  left: unset !important;
+  left: unset !important; */
 }
 
 main.ui.container {
